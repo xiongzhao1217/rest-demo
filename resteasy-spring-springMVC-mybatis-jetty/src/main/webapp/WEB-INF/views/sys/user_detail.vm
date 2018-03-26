@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    #parse("/common/common_head_title.vm")
+    #parse("/common/common_head_meta.vm")
+	#parse("/common/common_head_ref.vm")
+
+
+<body class='${themeStyle}'>
+    #parse("/common/common_head.vm")
+
+<div id='wrapper'>
+
+    <div id='main-nav-bg'></div>
+
+    #parse("/common/common_leftbar.vm")
+
+    <section id='content'>
+        <div class='container-fluid'>
+            <div class='row-fluid' id='content-wrapper'>
+                <div class='span12'>
+                    <div class='page-header'>
+                        <h1 class='pull-left'>
+                            <i class='icon-user'></i>
+                            <span>用户详情页</span>
+                        </h1>
+                        <div class='pull-right'>
+                            <ul class='breadcrumb'>
+                                <li>
+                                    <a href="/"><i class='icon-bar-chart'></i>
+                                    </a>
+                                </li>
+                                <li class='separator'>
+                                    <i class='icon-angle-right'></i>
+                                </li>
+                                <li>系统设置</li>
+                                <li class='separator'>
+                                    <i class='icon-angle-right'></i>
+                                </li>
+                                <li class='active'>用户详情页</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class='row-fluid'>
+                    <div class='span12 box bordered-box blue-border' style='margin-bottom:0;'>
+                        <div class='box-header blue-background'>
+                            <div class='title'>用户详情页</div>
+                            <div class="actions">
+                                <button class='btn btn-primary' type='submit' onclick="JavaScript:history.back(-1);">取消</button>
+                            </div>
+                        </div>
+                        <br/>
+                        <div class='row-fluid'>
+                            <div class="span2 box "><div class='box-header box-header-small' style='font-size:12px;background-color:#fff;'>
+                                <div align="center">用户姓名:</div>
+                            </div>
+                            </div>
+                            <div class="span10 box "><div class='box-header box-header-small' style='font-size:12px;background-color:#fff;'>
+                                <div >$!{exploiterAdmin.LastName}$!{exploiterAdmin.firstName}</div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class='row-fluid'>
+                            <div class="span2 box "><div class='box-header box-header-small' style='font-size:12px;background-color:#fff;'>
+                                <div align="center">电话号码:</div>
+                            </div>
+                            </div>
+                            <div class="span10 box "><div class='box-header box-header-small' style='font-size:12px;background-color:#fff;'>
+                                <div >$!{exploiterAdmin.mobile}</div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class='row-fluid'>
+                            <div class="span2 box "><div class='box-header box-header-small' style='font-size:12px;background-color:#fff;'>
+                                <div align="center">电子邮箱:</div>
+                            </div>
+                            </div>
+                            <div class="span10 box "><div class='box-header box-header-small' style='font-size:12px;background-color:#fff;'>
+                                <div >$!{exploiterAdmin.email}</div>
+                            </div>
+                            </div>
+                        </div>
+                        <div class='row-fluid'>
+                            <div class="span2 box "><div class='box-header box-header-small' style='font-size:12px;background-color:#fff;'>
+                                <div align="center">性别:</div>
+                            </div>
+                            </div>
+                            <div class="span10 box "><div class='box-header box-header-small' style='font-size:12px;background-color:#fff;'>
+                                <div >
+                                    #if($!{exploiterAdmin.sex}==1)
+                                    男
+                                    #else
+                                    女
+                                    #end
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

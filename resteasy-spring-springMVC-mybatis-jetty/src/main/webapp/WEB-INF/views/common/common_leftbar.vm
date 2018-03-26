@@ -1,0 +1,129 @@
+<nav class='' id='main-nav'>
+    <div class='navigation'>
+        <div class='search'>
+            <form accept-charset="UTF-8" action="search_results.html" method="get" /><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+            <div class='search-wrapper'>
+                <input autocomplete="off" class="search-query" id="q" name="q" placeholder="Search..." type="text" value="" />
+                <button class="btn btn-link icon-search" name="button" type="submit"></button>
+            </div>
+            </form>
+        </div>
+        <ul class='nav nav-stacked'>
+
+
+
+            <li class=''>
+                <a href='${basePath}user/security/index.html'  #if(${leftBarParam}=='home') class="in" #end >
+                    <i class='icon-home'></i>
+                    <span>后台管理首页</span>
+                </a>
+            </li>
+
+            ##用户管理
+            <li #if(${leftBarParam}=="user") class="active" #end>
+                <a class = 'dropdown-collapse #if(${leftBarParam}=="user")in#end' href="javascript:void(0)">
+                    <i class='icon-group'></i>
+                    <span>用户管理</span>
+                    <i class="icon-angle-down angle-down">
+                    </i>
+                </a>
+                <ul class = 'nav nav-stacked #if(${leftBarParam}=="user")in#end'>
+                    <li #if(${leftBarParam2}=="vip") class="active" #end>
+                        <a href='${basePath}user/security/vipOpenLog/toVipOpenLogList'>
+                            <i class='icon-user'></i>
+                            <span>金卡会员开通记录</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+        ##机构管理
+            <li #if(${leftBarParam}=="institution") class="active" #end>
+                <a class = 'dropdown-collapse #if(${leftBarParam}=="institution")in#end' href="javascript:void(0)">
+                    <i class='icon-inbox'></i>
+                    <span>机构管理</span>
+                    <i class="icon-angle-down angle-down">
+                    </i>
+                </a>
+                <ul class = 'nav nav-stacked #if(${leftBarParam}=="institution")in#end'>
+                    <li #if(${leftBarParam2}=="institutionRegisterApplyList") class="active" #end>
+                        <a href='${basePath}user/security/institutionRegisterApply/institutionRegisterApplyList'>
+                            <i class='icon-gamepad'></i>
+                            <span>机构注册管理</span>
+                        </a>
+                    </li>
+                </ul>
+                <ul class = 'nav nav-stacked #if(${leftBarParam}=="institution")in#end'>
+                    <li #if(${leftBarParam2}=="institutionList") class="active" #end>
+                        <a href='${basePath}user/security/institution/institutionList'>
+                            <i class='icon-inbox'></i>
+                            <span>推广机构列表</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+            ##兑换码管理
+            <li #if(${leftBarParam}=="redeemCode") class="active" #end>
+                <a class = 'dropdown-collapse #if(${leftBarParam}=="redeemCode")in#end' href="javascript:void(0)">
+                    <i class='icon-credit-card'></i>
+                    <span>兑换码管理</span>
+                    <i class="icon-angle-down angle-down">
+                    </i>
+                </a>
+                <ul class = 'nav nav-stacked #if(${leftBarParam}=="redeemCode")in#end'>
+                    <li #if(${leftBarParam2}=="redeemCategory") class="active" #end>
+                        <a href='${basePath}user/security/institutionRedeem/toRedeemCodeCategoryList'>
+                            <i class='icon-list'></i>
+                            <span>兑换码种类管理</span>
+                        </a>
+                    </li>
+                    <li #if(${leftBarParam2}=="redeemList") class="active" #end>
+                        <a href='${basePath}user/security/institutionRedeem/toInstitutionRedeemCodeList'>
+                            <i class='icon-list'></i>
+                            <span>机构兑换码列表</span>
+                        </a>
+                    </li>
+                    <li #if(${leftBarParam2}=="orderList") class="active" #end>
+                        <a href='${basePath}user/security/institutionOrder/toInstitutionOrderList'>
+                            <i class='icon-list'></i>
+                            <span>机构兑换码订单列表</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+
+            <li #if(${leftBarParam}=="sys") class="active" #end>
+                <a class = 'dropdown-collapse   #if(${leftBarParam}=='sys')in #end ' href='javascript:void(0)'>
+                    <i class='icon-cogs'></i>
+                    <span>系统设置</span>
+                    <i class="icon-angle-down angle-down">
+                    </i>
+                    </a>
+                    <ul class = 'nav nav-stacked #if(${leftBarParam}=='sys')in #end' >
+##                        <li class=''>
+##                            <a href='javascript:void(0)'>
+##                                <i class='icon-book'></i>
+##                                <span>字典管理</span>
+##                            </a>
+##                        </li>
+                        <li #if(${leftBarParam2}=="adminList") class="active" #end>
+                            <a href='${basePath}user/security/sys/adminList.html'>
+                                <i class='icon-caret-right'></i>
+                                <span>管理员列表</span>
+                            </a>
+                        </li>
+                    </ul>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<script>
+
+    requirejs(['leftbar'],function(leftbar){
+        leftbar.initLeftBar();
+    });
+
+</script>
+

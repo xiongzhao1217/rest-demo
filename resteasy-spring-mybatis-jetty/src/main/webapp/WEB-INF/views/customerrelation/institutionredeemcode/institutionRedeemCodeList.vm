@@ -1,0 +1,337 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    #parse("/common/common_head_title.vm")
+    #parse("/common/common_head_meta.vm")
+	#parse("/common/common_head_ref.vm")
+    #leftBarActive("redeemCode")
+    #leftBarActive2("redeemList")
+
+<body class='${themeStyle}'>
+    #parse("/common/common_head.vm")
+
+<div id='wrapper'>
+
+    <div id='main-nav-bg'></div>
+
+    #parse("/common/common_leftbar.vm")
+
+    <section id='content'>
+        <div class='container-fluid'>
+            <div class='row-fluid' id='content-wrapper'>
+                <div class='span12'>
+                    <div class='page-header'>
+                        <h1 class='pull-left'>
+                            <i class='icon-money'></i>
+                            <span>机构兑换码管理</span>
+                        </h1>
+                        <div class="pull-right">
+                            <ul class="breadcrumb">
+                                <li>
+                                    <i class="icon-signal"></i>
+                                </li>
+                                <li class="separator">
+                                    <i class="icon-angle-right"></i>
+                                </li>
+                                <li>机构兑换码管理</li>
+                                <li class="separator">
+                                    <i class="icon-angle-right"></i>
+                                </li>
+                                <li class="active">列表</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class='alert alert-info'>
+                        <a class='close' data-dismiss='alert' href='#'>&times;</a>
+                        <strong ></strong>
+                        - [这里显示了机构的兑换码信息]
+                    </div>
+
+                    <div class='row-fluid'>
+
+                        <div class='span12 box bordered-box green-border' style='margin-bottom:0;'>
+                            <div class="input-prepend">
+                                <br>
+                            </div>
+                            <div class="pull-right">
+                                <a class="btn btn-primary" href="$!{basePath}user/security/institutionRedeem/toInstitutionRedeemCodeAdd" style="margin-bottom:5px">申请新增兑换码</a>
+                            </div>
+
+                            <form id="queryForm" action="$!{basePath}user/security/institutionRedeem/toInstitutionRedeemCodeList" method="post">
+
+                                <div class="pull-left" style="margin-top: 4px;">
+                                </div>
+
+                                <div class="input-prepend" style="margin-top: 4px;">
+                                    <span class="add-on">兑换码查询</span>
+                                    <input class="span7" type="text" name="redeemCode" value="$!{query.redeemCode}">
+                                </div>
+                                <div class="input-prepend " style="margin-top: 4px;">
+                                    <span class="add-on">机构号</span>
+                                    <select name = 'institutionCode' id="institutionCode">
+                                        <option value="">请选择</option>
+                                        #foreach($!institution in $!institutionCode)
+                                            <option
+                                                #if($!{institution.institutionCode}== $!{query.institutionCode})
+                                                        selected = "selected"
+                                                #end  value="$!{institution.institutionCode}"
+                                            />$!{institution.institutionCode}
+                                        #end
+                                    </select>
+                                </div>&nbsp;&nbsp;
+
+                                <div class="input-prepend " style="margin-top: 4px;">
+                                    <span class="add-on">批次号</span>
+                                    <select name = 'batchNumber' id="batchNumber">
+                                        <option value="">请先选择机构号</option>
+                                        #if($!{batchList})
+                                            #foreach($batch in $!{batchList})
+                                                <option value='$batch'
+                                                    #if($!query.batchNumber == $batch )
+                                                        selected = selected
+                                                    #end
+                                                >$batch</option>
+                                            #end
+                                        #end
+                                    </select>
+                                </div>&nbsp;&nbsp;
+
+                                <div class="input-prepend " style="margin-top: 4px;">
+                                    <span class="add-on">兑换码类型</span>
+                                    <select name ='isFee'>
+                                        <option value="" >请选择</option>
+                                            #foreach($!fee in $!isFee)
+                                                <option value="$!fee.value"
+                                                #if($!fee.value == $!query.isFee)
+                                                    selected = selected
+                                                #end
+                                                >$!fee.describe</option>
+                                            #end
+                                    </select>
+                                </div>&nbsp;&nbsp;
+
+                                <div class="input-prepend " style="margin-top: 4px;">
+                                    <span class="add-on">兑换码种类</span>
+                                    <select name = 'skuId' >
+                                        <option value="">请选择</option>
+                                        #foreach($!sku in $!skuList)
+                                            <option
+                                                #if($!{sku.id}== $!{query.skuId})
+                                                        selected = "selected"
+                                                #end  value="$!{sku.id}"
+                                            />$!{sku.skuName}
+                                        #end
+                                    </select>
+                                </div>&nbsp;&nbsp;
+
+                                <div class="input-prepend " style="margin-top: 4px;">
+                                    <span class="add-on">使用状态</span>
+                                    <select name = 'isUse' >
+                                        <option value="">请选择</option>
+                                        #foreach($!use in $!isUse)
+                                            <option
+                                                #if($!{use.value} == $!{query.isUse})
+                                                    selected = "selected"
+                                                #end value="$!{use.value}"
+                                            />$!{use.describe}
+                                        #end
+                                    </select>
+                                </div>&nbsp;&nbsp;
+
+                                <div class="input-prepend " style="margin-top: 4px;">
+                                    <span class="add-on">冻结状态</span>
+                                    <select name = 'isFreeze' >
+                                        <option value="">请选择</option>
+                                        #foreach($!freeze in $!isFreeze)
+                                            <option
+                                                #if($!{freeze.value} == $!{query.isFreeze})
+                                                        selected = "selected"
+                                                #end value="$!{freeze.value}"
+                                            />$!{freeze.describe}
+                                        #end
+                                    </select>
+                                </div>&nbsp;&nbsp;
+
+                                <div class="input-prepend " style="margin-top: 4px;">
+                                    <span class="add-on">废弃状态</span>
+                                    <select name = 'isDiscard' >
+                                        <option value="">请选择</option>
+                                        #foreach($!discard in $!isDiscard)
+                                            <option
+                                                #if($!{discard.value} == $!{query.isDiscard})
+                                                        selected = "selected"
+                                                #end value="$!{discard.value}"
+                                            />$!{discard.describe}
+                                        #end
+                                    </select>
+                                </div>&nbsp;&nbsp;
+
+                                <div class="pull-right">
+                                    <button class="btn btn-primary" name="button" style="margin-bottom:5px" type="submit">查&nbsp;&nbsp;&nbsp;询</button>
+                                </div>
+
+                                <div class="input-group">
+                                    <span class="add-on">兑换码总数:$!countInfo.get("count")</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span class="add-on">未使用:$!countInfo.get("notUse")</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span class="add-on">已使用:$!countInfo.get("used")</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span class="add-on">付费转化量:$!countInfo.get("change")</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </div>
+
+
+                                <input type="hidden" name="pageNo" value="$!pageBean.pageNo" id ="pageNo">
+                                <input type="hidden" name="pageSize" value="$!pageBean.pageSize" id ="pageSize">
+                            </form>
+
+                            <div class="row-fluid">
+                                <button class="btn btn-success" id="checkFreeze" data-content="2" style="margin-bottom:5px" >将选中号码冻结</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-success" id="checkFreeze" style="margin-bottom:5px" data-content="1">将选中号码取消冻结</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-success" id="checkDisCard" style="margin-bottom:5px" >将选中号码废弃</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button class="btn btn-success" id="exportAll" style="margin-bottom:5px" >将选中号码导出</button>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <div class="pull-right">
+                                    <select id="morePage" >
+                                        <option value="">请选择更多分页</option>
+                                        <option value="50"
+                                            #if($!pageBean.pageSize == 50)
+                                                selected = selected
+                                            #end
+                                        >每页50条</option>
+                                        <option value="100"
+                                            #if($!pageBean.pageSize == 100)
+                                                selected = selected
+                                            #end>每页100条</option>
+                                        <option value="200"
+                                            #if($!pageBean.pageSize == 200)
+                                                selected = selected
+                                            #end
+                                        >每页200条</option>
+                                        <option value="500"
+                                            #if($!pageBean.pageSize == 500)
+                                                selected = selected
+                                            #end
+                                        >每页500条</option>
+                                        <option value="1000"
+                                            #if($!pageBean.pageSize == 1000)
+                                                selected = selected
+                                            #end
+                                        >每页1000条</option>
+                                    </select>
+                                </div>
+                            </div><br>
+
+                            <div class='box-content box-no-padding'>
+                                <table class='table table-bordered table-hover table-striped' style='margin-bottom:0;'>
+                                    <thead>
+                                    <tr>
+                                        <th><input type="checkbox" id="checkAll"/>全选</th>
+                                        <th>兑换码</th>
+                                        <th>序列号</th>
+                                        <th>机构号</th>
+                                        <th>批次号</th>
+                                        <th>兑换码种类</th>
+                                        <th>金额</th>
+                                        <th>生成时间</th>
+                                        <th>有效期</th>
+                                        <th>使用状态</th>
+                                        <th>冻结状态</th>
+                                        <th>废弃状态</th>
+                                        <th>使用时间</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        #if($page.getListResult().size() == 0)
+                                        <tr >
+                                            <td colspan="13" valign="middle" style="text-align: center"><font color="" size="4">您还没有添加兑换码哦</font></td>
+                                        </tr>
+                                        #else
+                                            #foreach($obj in $page.getListResult())
+                                            <tr>
+                                                <td class="no_sorting" style="width: 20px;">
+                                                    <label class="checkbox inline">
+                                                        <input type="checkbox" value="$!{obj.id}" class="check-box"/>
+                                                    </label>
+                                                </td>
+
+                                                <td>$!{obj.redeemCode}</td>
+
+                                                <td>
+                                                    $!{obj.seserialNumber}
+                                                </td>
+
+                                                <td>
+                                                    $!{obj.institutionCode}
+                                                </td>
+
+                                                <td>
+                                                    ${obj.batchNumber}
+                                                </td>
+
+                                                <td>
+                                                    $!{obj.redeemCodeName}
+                                                </td>
+
+                                                <td>
+                                                    $!{obj.amount}
+                                                </td>
+
+                                                <td>
+                                                    $!date.format('yyyy-MM-dd HH:mm:ss',$!obj.createTime)
+                                                </td>
+
+                                                <td>
+                                                    $!date.format('yyyy-MM-dd',$!obj.beginTime)至$!date.format('yyyy-MM-dd',$!obj.endTime)
+                                                </td>
+
+                                                <td>
+                                                    #foreach($!use in $!{isUse})
+                                                        #if($!use.value == $!{obj.isUse})
+                                                            $!use.describe
+                                                        #end
+                                                    #end
+                                                </td>
+
+                                                <td>
+                                                    #foreach($!freeze in $!{isFreeze})
+                                                        #if($!freeze.value == $!{obj.isFreeze})
+                                                        $!freeze.describe
+                                                        #end
+                                                    #end
+                                                </td>
+
+                                                <td>
+                                                    #foreach($!discard in $!{isDiscard})
+                                                        #if($!discard.value == $!{obj.isDiscard})
+                                                        $!discard.describe
+                                                        #end
+                                                    #end
+                                                </td>
+
+                                                <td>
+                                                    $!date.format('yyyy-MM-dd HH:mm:ss',$!obj.changeTime)
+                                                </td>
+                                            </tr>
+                                            #end
+                                        #end
+                                    </tbody>
+                                </table>
+                                <!-- 引入分页 -->
+                                #pageBar("queryForm")
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+</div>
+
+</body>
+<script>
+
+    requirejs(['customerrelation/institutionRedeemCode/institutionRedeemCode'],function(institutionRedeemCode){
+        institutionRedeemCode.initList();
+    });
+</script>
+</html>

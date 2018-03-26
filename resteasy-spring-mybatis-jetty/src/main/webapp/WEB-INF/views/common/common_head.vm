@@ -1,0 +1,50 @@
+<header>
+    <div class='navbar'>
+        <div class='navbar-inner'>
+            <div class='container-fluid'>
+                <a class='brand' href='index.html'>
+##                    <i class='icon-group'></i>
+                    <img src="${basePath}static/home/images/icon32_wx_logo.png" style="width: 24px;height: 24px;"/>
+                    <span class='hidden-phone'>常青藤爸爸-微信公众号后台</span>
+                </a>
+                <a class='toggle-nav btn pull-left' href='#'>
+                    <i class='icon-reorder'></i>
+                </a>
+                <ul class='nav pull-right'>
+                    <li class='dropdown dark user-menu'>
+                        <a class='dropdown-toggle' data-toggle='dropdown' href='#'>
+                            <img alt='Mila Kunis' height='23' src='${flattyPathRoot}assets/images/avatar.jpg' width='23' />
+                            <span class='user-name hidden-phone'>$!{member_signin_session.admin.lastName}$!{member_signin_session.admin.firstName}</span>
+                            <b class='caret'></b>
+                        </a>
+                        <ul class='dropdown-menu'>
+##                            <li>
+##                                <a href='javascript:void(0)'>
+##                                    <i class='icon-user'></i>
+##                                    个人资料
+##                                </a>
+##                            </li>
+##                            <li>
+##                                <a href='javascript:void(0)'>
+##                                    <i class='icon-cog'></i>
+##                                    设置
+##                                </a>
+##                            </li>
+##                            <li class='divider'></li>
+                            <li>
+                                <a href='${basePath}loginOut.html'>
+                                    <i class='icon-signout'></i>
+                                    安全退出
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+##                <form accept-charset="UTF-8" action="search_results.html" class="navbar-search pull-right hidden-phone" method="get" /><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+##                <button class="btn btn-link icon-search" name="button" type="submit"></button>
+##                <input autocomplete="off" class="search-query span2" id="q_header" name="q" placeholder="搜索..." type="text" value="" />
+##                </form>
+            </div>
+        </div>
+    </div>
+</header>

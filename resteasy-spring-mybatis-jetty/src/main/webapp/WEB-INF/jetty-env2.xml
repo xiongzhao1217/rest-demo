@@ -1,0 +1,13 @@
+<Configure class="org.eclipse.jetty.webapp.WebAppContext">
+    <New class="org.eclipse.jetty.plus.jndi.Resource">
+        <Arg>java:comp/env/jndi/mvn-jetty-env</Arg>
+        <Arg>
+            <New class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+                <Set name="driverClassName">com.mysql.jdbc.Driver</Set>
+                <Set name="url">jdbc:mysql://gitlab.ivydad.com:3306/ivydad?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull</Set>
+                <Set name="username">ivydad_test</Set>
+                <Set name="password">IVYDAd2015</Set>
+            </New>
+        </Arg>
+    </New>
+</Configure>

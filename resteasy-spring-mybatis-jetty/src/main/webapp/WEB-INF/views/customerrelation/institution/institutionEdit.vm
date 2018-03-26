@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    #parse("/common/common_head_title.vm")
+    #parse("/common/common_head_meta.vm")
+	#parse("/common/common_head_ref.vm")
+	#parse("/common/common_head_ztree_ref.vm")
+    #leftBarActive("institution")
+    #leftBarActive2("institutionList")
+
+<body class='${themeStyle}'>
+	#parse("/common/common_head.vm")
+
+<div id='wrapper'>
+
+    <div id='main-nav-bg'></div>
+
+    #parse("/common/common_leftbar.vm")
+
+    <section id='content'>
+        <div class='container-fluid'>
+            <div class='row-fluid' id='content-wrapper'>
+                <div class='span12'>
+                    <div class='page-header'>
+                        <h1 class='pull-left'>
+                            <i class='icon-money'></i>
+                            <span>编辑机构</span>
+                        </h1>
+                        <div class="pull-right">
+                            <ul class="breadcrumb">
+                                <li>
+                                    <i class="icon-signal"></i>
+                                </li>
+                                <li class="separator">
+                                    <i class="icon-angle-right"></i>
+                                </li>
+                                <li>编辑机构</li>
+                                <li class="separator">
+                                    <i class="icon-angle-right"></i>
+                                </li>
+                                <li class="active">编辑</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class='row-fluid'>
+                    <div class='span8 box'>
+                        <form id="myForm" accept-charset="UTF-8" enctype="multipart/form-data" action="${basePath}user/security/institution/doInstitutionEdit" class="form form-horizontal" method="post" style="margin-bottom: 0;" /><div style="margin:0;padding:0;display:inline"><input name="utf8" type="hidden" value="&#x2713;" /></div>
+                        <div class='box-content'>
+                            <br><br>
+                            <input id = "uuid" name="uuid" type="hidden" value="$!{institutionVO.uuid}" />
+                            <div class='control-group info' >
+                                <label class='control-label'  for='inputInfo'>机构名称</label>
+                                <div class='controls'>
+                                    <input  class='span3' type='text' placeholder='机构名称' id='institutionName' name="institutionName" value="$!{institutionVO.institutionName}"/>
+                                </div>
+                            </div>
+                            <div class='control-group info' >
+                                <label class='control-label'  for='inputInfo'>负责人</label>
+                                <div class='controls'>
+                                    <input  class='span3' type='text' placeholder='负责人' id='headName' name="headName" value="$!{institutionVO.headName}"/>
+                                </div>
+                            </div>
+                            <div class='control-group info' >
+                                <label class='control-label'  for='inputInfo'>手机号</label>
+                                <div class='controls'>
+                                    <input  class='span3' type='text' placeholder='手机号' id='telephone' name="telephone" value="$!{institutionVO.telephone}"/>
+                                </div>
+                            </div>
+                            <div class='control-group info' >
+                                <label class='control-label'  for='inputInfo'>城市</label>
+                                <div class='controls'>
+                                <div class="span3">
+                                <select name = 'cityId' class='select2 input-block-level'>
+                                    <option value="">请选择城市</option>
+                                    #foreach($!region in $!regionList)
+                                        <option value="$!{region.id}"
+                                            #if($!{region.id} == $!{institutionVO.cityId})
+                                                selected="selected"
+                                            #end
+                                        >$!{region.regionName}</option>
+                                    #end
+                                </select>
+                                 </div>
+                                </div>
+                            </div>
+                            <div class='control-group info' >
+                                <label class='control-label'  for='inputInfo'>地址</label>
+                                <div class='controls'>
+                                    <input  class='span3' type='text' placeholder='地址' id='address' name="address" value="$!{institutionVO.address}"/>
+                                </div>
+                            </div>
+                            <div class='control-group info' >
+                                <label class='control-label'  for='inputInfo'>佣金系数</label>
+                                <div class='controls'>
+                                    <input  class='span3' type='text' placeholder='佣金系数' id='rate' name="rate" value="$!{institutionVO.rate}"/>
+                                </div>
+                            </div>
+                            <div class='control-group info'>
+                                <label class='control-label' for='inputTextArea'>备注</label>
+                                <div class='controls'>
+                                    <textarea maxlength="200" class="span5 char-max-length" id='remark' placeholder='这里可以添加备注' rows='5' name="remark">$!{institutionVO.remark}</textarea>
+                                </div>
+                            </div>
+                            <br />
+                            <div class='control-group'>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <button  class="btn btn-primary btn-small" id="submitForm">保存</button>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                <a href="${basePath}user/security/institution/institutionList"><button class="btn btn-danger btn-small" type="button">取消</button></a>
+                            </div>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</body>
+<script>
+    requirejs(['customerrelation/institution/institution'],function(aqcm){
+        aqcm.initAdd();
+    });
+</script>
+</html>

@@ -1,0 +1,169 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    #parse("/common/common_head_title.vm")
+    #parse("/common/common_head_meta.vm")
+	#parse("/common/common_head_ref.vm")
+    #leftBarActive("redeemCode")
+    #leftBarActive2("redeemCategory")
+
+<body class='${themeStyle}'>
+    #parse("/common/common_head.vm")
+
+<div id='wrapper'>
+
+    <div id='main-nav-bg'></div>
+
+    #parse("/common/common_leftbar.vm")
+
+    <section id='content'>
+        <div class='container-fluid'>
+            <div class='row-fluid' id='content-wrapper'>
+                <div class='span12'>
+                    <div class='page-header'>
+                        <h1 class='pull-left'>
+                            <i class='icon-money'></i>
+                            <span>兑换码种类管理</span>
+                        </h1>
+                        <div class="pull-right">
+                            <ul class="breadcrumb">
+                                <li>
+                                    <i class="icon-signal"></i>
+                                </li>
+                                <li class="separator">
+                                    <i class="icon-angle-right"></i>
+                                </li>
+                                <li>兑换码种类管理</li>
+                                <li class="separator">
+                                    <i class="icon-angle-right"></i>
+                                </li>
+                                <li class="active">列表</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class='alert alert-info'>
+                        <a class='close' data-dismiss='alert' href='#'>&times;</a>
+                        <strong ></strong>
+                        - [这里显示了兑换码种类信息]
+                    </div>
+
+                    <div class='row-fluid'>
+
+                        <div class='span12 box bordered-box green-border' style='margin-bottom:0;'>
+                            <div class="input-prepend">
+                                <br>
+                            </div>
+                            <div class="pull-right">
+                                <a class="btn btn-primary" href="$!{basePath}user/security/institutionRedeem/toRedeemCodeCategoryAdd" style="margin-bottom:5px">新建种类</a>
+                            </div>
+                            <form id="queryForm" action="$!{basePath}user/security/vipGoodsReward/toVipGoodsRewardList" method="post">
+
+                                <div class="pull-left" style="margin-top: 4px;">
+                                </div>
+                                <input type="hidden" name="pageNo" value="$!pageBean.pageNo" id ="pageNo">
+                                <input type="hidden" name="pageSize" value="$!pageBean.pageSize" id ="pageSize">
+                            </form>
+
+                            <div class='box-content box-no-padding'>
+                                <table class='table table-bordered table-hover table-striped' style='margin-bottom:0;'>
+                                    <thead>
+                                    <tr>
+                                        <th>兑换码种类名称</th>
+                                        <th>类型</th>
+                                        <th>有效期</th>
+                                        <th>金额</th>
+                                        <th>使用限制</th>
+                                        <th>创建时间</th>
+                                        <th>创建人</th>
+                                        <th>管理操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        #if($page.getListResult().size() == 0)
+                                        <tr >
+                                            <td colspan="8" valign="middle" style="text-align: center"><font color="" size="4">您还没有添加福利哦</font></td>
+                                        </tr>
+                                        #else
+                                            #foreach($obj in $page.getListResult())
+                                            <tr>
+                                                <input type="hidden" value="$!{obj.id}"/>
+                                                <td>$!{obj.skuName}</td>
+
+                                                <td>$!{obj.typeStr}</td>
+
+                                                <td>$!{obj.timeStr}</td>
+
+                                                <td>$!{obj.price}</td>
+
+                                                <td>$!{obj.conditionStr}</td>
+
+                                                <td>
+                                                    $!date.format('yyyy-MM-dd HH:mm:ss',$!obj.createTime)
+                                                </td>
+
+                                                <td>
+                                                    $!{obj.createLastName}$!{obj.createFirstName}
+                                                </td>
+
+                                                <td>
+                                                    <div class='text-center'>
+                                                        #if(${obj.isOpen} == 0)
+                                                            <a id="objOpen" class='btn btn-success btn-mini' href="javascript:void(0)" url='${basePath}user/security/institutionRedeem/doOpenCategory/$!{obj.uuid}'>
+                                                                <i class='icon-ok-sign'>开售</i>
+                                                            </a>
+                                                            &nbsp;
+                                                            <a id="objDelete" class='btn btn-danger btn-mini' href="javascript:void(0)" url='${basePath}user/security/institutionRedeem/doDeleteCategory/$!{obj.uuid}'>
+                                                                <i class='icon-remove'>删除</i>
+                                                            </a>
+                                                        #else
+                                                            <a id="objClose" class='btn btn-warning btn-mini' href="javascript:void(0)" url='${basePath}user/security/institutionRedeem/doOpenCategory/$!{obj.uuid}'>
+                                                                <i class='icon-ban-circle'>取消开售</i>
+                                                            </a>
+                                                        #end
+                                                        &nbsp;
+                                                        <a data-toggle="modal" data-release="true" class="btn btn-success btn-mini" data-content="$!{obj.uuid}" name="button" type="button" id="storageBtn"><font color="#f0f8ff">入库</font></a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            #end
+                                        #end
+                                    </tbody>
+                                </table>
+                                <!-- 引入分页 -->
+                                #pageBar("queryForm")
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class='modal hide fade' id='modal_storage' role='dialog' tabindex='-1'>
+        <div class='modal-header'>
+            <button class='close' data-dismiss='modal' type='button'>&times;</button>
+            <h3>生成商品库存</h3>
+        </div>
+        <div class='modal-body'>
+            <input type="text" id ="quantityNum" name="quantityNum" placeholder='请填写库存数量'/>
+            <input type="hidden" id = "categoryUUid">
+        </div>
+        <div class='modal-footer'>
+            <button class='btn' data-dismiss='modal'>取消</button>
+            <button id="submitButton" class='btn btn-primary'>确定</button>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script>
+
+    requirejs(['customerrelation/institutionRedeemCode/institutionRedeemCode'],function(institutionRedeemCode){
+        institutionRedeemCode.initList();
+    });
+
+</script>
+</html>

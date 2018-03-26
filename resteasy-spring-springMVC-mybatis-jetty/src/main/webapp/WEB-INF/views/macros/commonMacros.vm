@@ -1,0 +1,130 @@
+####公共宏
+
+
+## Author:lipengfei
+#**
+ *  定义后台管理系统模板的路径参数
+ *#
+#macro(flattyPathRoot $basePath)
+    #set($flattyPathRoot ="${basePath}static/common/js/lib/flatty/")
+#end
+
+
+## Author:lipengfei
+#**
+ *  定义后台管理系统的主题风格变量
+ *#
+#macro(themeStyle $themeCode)
+    #set($themeStyle ="$themeCode")
+#end
+
+
+## Author:lipengfei
+#**
+ *  定义leftBar的当前页面
+ *  定义各个模块：
+ *  home:首页
+ *  lecture:讲座管理
+ *  teacher:教师管理
+ *  sys:系统管理
+ *  login_out:退出系统
+ *
+ *#
+#macro(leftBarActive $leftBarParam)
+    #set($leftBarParam ="$leftBarParam")
+#end
+
+## 二级菜单参数,用于显示当前二级菜单处于激活状态
+#macro(leftBarActive2 $leftBarParam2)
+    #set($leftBarParam2 ="$leftBarParam2")
+#end
+
+
+
+##  add by xiongzhao 2016.03.22
+##	分页的 PageBarII 翻页栏（可以放到网页任意位置）
+##	但必须：
+##	1、引入时需要传入$formId参数。引入格式:#pageBar("formId")。(主要为了当页面包含多个分页时,可以互不影响,相互独立)
+##	2、将以下两个隐藏字段复制到指定的Form表单里面。
+## 	<input type="hidden" name="pageNo" value="$!pageBean.pageNo" id ="pageNo">
+## 	<input type="hidden" name="pageSize" value="$!pageBean.pageSize" id ="pageSize">
+
+#macro(pageBar $formId)
+<div class="row-fluid">
+    <div class="span6">
+        <div class="dataTables_info" style="padding-top: 3px;padding-left: 10px;">
+            #set($startNO = ($pageBean.pageNo - 1) * $pageBean.pageSize + 1)
+            #set($endNO = $pageBean.pageSize * $pageBean.pageNo)
+            #if($endNO > $pageBean.totalItems)
+                #set($endNO = $pageBean.totalItems)
+            #end
+            第$!{startNO}~$!{endNO}条,共$!{pageBean.totalPage}页
+        </div>
+    </div>
+    <div class="span6 text-right">
+        <div class="dataTables_paginate paging_bootstrap pagination pagination-small" style="padding-right: 5px;">
+            <ul>
+                <li #if(${pageBean.pageNo} == 1)class="prev disabled"#end >
+                    <a href="#" #if(${pageBean.pageNo} != 1) onclick="JavaScript:changePage(${pageBean.getPrePage()});" #end>上一页</a></li>
+                #foreach($foo in ${pageBean.getSlider()})
+                    <li #if(${pageBean.pageNo}==$foo) class="active" #end><a href="#" #if(${pageBean.pageNo}!=$foo) onclick="JavaScript:changePage(${foo});" #end>${foo}</a></li>
+                #end
+                <li #if(${pageBean.pageNo} == ${pageBean.totalPages}) class="next disabled" #end><a href="#" #if(${pageBean.pageNo} != ${pageBean.totalPages}) onclick="JavaScript:changePage(${pageBean.getNextPage()});" #end>下一页</a></li>
+                <li>&nbsp;&nbsp;<input id="goto" value="$!{pageBean.pageNo}" style="width: 28px;margin-bottom: 3px;height: 15px;" type="text"></li>
+                <li><button class="btn btn-mini btn-primary" name="button" style="margin-bottom:5px" onclick="JavaScript:changePage(-1,this);" type="button">跳转</button></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script language="javascript">
+    function changePage(pagenum,ele){
+        var f = $!{formId};
+        if(f==null){
+            easyAlert("查询表单不存在！");
+            return false;
+        }
+
+        if(pagenum==-1){
+            var $ele = $(ele);
+            pagenum = $ele.parent().prev().children().val();
+
+            if(pagenum==null || pagenum == ''){
+                easyAlert("请输入页面号码!");
+                return false;
+            }else{
+
+                pagenum = parseInt(pagenum);
+                if(!/^-?\d+$/.test(pagenum)){
+                    easyAlert("请输入正确的数字!");
+                        $ele.parent().prev().children().val('');
+                    return false;
+                }
+
+                if(pagenum < 0){
+                    pagenum = 1;
+                }
+
+                if(pagenum > $pageBean.totalPage){
+                    pagenum = $pageBean.totalPage;
+                }
+            }
+        }
+
+        f.pageNo.value = pagenum;
+        f.submit();
+    }
+
+    /**
+     * ------add by xiongzhao 简单漂亮的alert
+     */
+    function easyAlert(message){
+        bootbox.dialog(message, [
+            {
+                label: "确定",
+                "class": "btn-danger"
+            }
+        ]);
+    }
+</script>
+#end

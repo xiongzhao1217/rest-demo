@@ -1,0 +1,290 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    #parse("/common/common_head_title.vm")
+    #parse("/common/common_head_meta.vm")
+	#parse("/common/common_head_ref.vm")
+    #leftBarActive("redeemCode")
+    #leftBarActive2("orderList")
+
+<body class='${themeStyle}'>
+    #parse("/common/common_head.vm")
+
+<div id='wrapper'>
+
+    <div id='main-nav-bg'></div>
+
+    #parse("/common/common_leftbar.vm")
+
+    <section id='content'>
+        <div class='container-fluid'>
+            <div class='row-fluid' id='content-wrapper'>
+                <div class='span12'>
+                    <div class='page-header'>
+                        <h1 class='pull-left'>
+                            <i class='icon-money'></i>
+                            <span>机构兑换码订单管理</span>
+                        </h1>
+                        <div class="pull-right">
+                            <ul class="breadcrumb">
+                                <li>
+                                    <i class="icon-signal"></i>
+                                </li>
+                                <li class="separator">
+                                    <i class="icon-angle-right"></i>
+                                </li>
+                                <li>机构兑换码订单管理</li>
+                                <li class="separator">
+                                    <i class="icon-angle-right"></i>
+                                </li>
+                                <li class="active">列表</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class='alert alert-info'>
+                        <a class='close' data-dismiss='alert' href='#'>&times;</a>
+                        <strong ></strong>
+                        - [这里显示了机构的兑换码订单信息]
+                    </div>
+
+                    <div class='row-fluid'>
+
+                        <div class='span12 box bordered-box green-border' style='margin-bottom:0;'>
+                            <div class="input-prepend">
+                                <br>
+                            </div>
+                            <form id="queryForm" action="$!{basePath}user/security/institutionOrder/toInstitutionOrderList" method="post">
+
+                                <div class="input-prepend" style="margin-top: 4px;">
+                                    <span class="add-on">订单号查询</span>
+                                    <input class="span7" type="text" name="orderCode" value="$!{query.orderCode}">
+                                </div>
+
+                                <div class="input-prepend " style="margin-top: 4px;">
+                                    <span class="add-on">机构号</span>
+                                    <select name = 'institutionCode' id="institutionCode">
+                                        <option value="">请选择</option>
+                                        #foreach($!code in $!institutionCode)
+                                            <option
+                                                #if($!{code.institutionCode}== $!{query.institutionCode})
+                                                        selected = "selected"
+                                                #end  value="$!{code.institutionCode}"
+                                            />$!{code.institutionCode}
+                                        #end
+                                    </select>
+                                </div>&nbsp;&nbsp;
+
+##                                <div class="input-prepend " style="margin-top: 4px;">
+##                                    <span class="add-on">兑换码批次号</span>
+##                                    <select name = 'batchNumber' id="batchNumber">
+##                                        #if($!{query.batchNumber} && $!{query.batchNumber} != "" )
+##                                            <option value="$!{query.batchNumber}">$!{query.batchNumber}</option>
+##                                         #else
+##                                             <option value="">请先选择机构号</option>
+##                                        #end
+##                                    </select>
+##                                </div>&nbsp;&nbsp;
+
+                                <div class="input-prepend" style="margin-top: 7px;">
+                                    <span class="add-on" style="margin-top: 7px;">下单时间区间</span>
+                                    <div class="datetimepicker input-append" id="datetimepicker" style="margin-top: 7px;">
+                                        <input class="input-medium" data-format="yyyy-MM-dd hh:mm:ss" type="text" id="timeBeginStr" name="timeBeginStr" value="$!{query.timeBeginStr}">
+                                        <span class="add-on">
+                                            <i data-date-icon="icon-calendar" data-time-icon="icon-time" class="icon-calendar"></i>
+                                            </span>
+                                    </div>
+                                    <div class="datetimepicker input-append" id="datetimepicker" style="margin-top: 7px;">
+                                        <input class="input-medium" data-format="yyyy-MM-dd hh:mm:ss" type="text" id="timeEndStr" name="timeEndStr" value="$!{query.timeEndStr}">
+                                        <span class="add-on">
+                                            <i data-date-icon="icon-calendar" data-time-icon="icon-time" class="icon-calendar"></i>
+                                            </span>
+                                    </div>
+                                </div>
+
+                                <div class="pull-right">
+                                    <button class="btn btn-primary" name="button" style="margin-top: 11px;" id="submitQueryBtn">查&nbsp;&nbsp;&nbsp;询</button>
+                                </div>
+
+                                <div class="input-group">
+                                    <span class="add-on">订单总金额:$!{orderCountInfo.countAmount}元</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                    <span class="add-on">订单总数:$!{orderCountInfo.orderNum}</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                </div>
+
+                                <input type="hidden" name="pageNo" value="$!pageBean.pageNo" id ="pageNo">
+                                <input type="hidden" name="pageSize" value="$!pageBean.pageSize" id ="pageSize">
+                            </form>
+
+                           <br>
+
+                            <div class='box-content box-no-padding'>
+                                <table class='table table-bordered table-hover table-striped' style='margin-bottom:0;'>
+                                    <thead>
+                                    <tr>
+                                        <th>订单号</th>
+                                        <th>机构号</th>
+                                        <th>兑换码种类</th>
+                                        <th>兑换码数量</th>
+                                        <th>有效期</th>
+                                        <th>下单时间</th>
+                                        <th>交易状态</th>
+                                        <th>总金额</th>
+                                        <th>实付金额</th>
+                                        <th>兑换码批次号</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        #if($page.getListResult().size() == 0)
+                                        <tr >
+                                            <td colspan="11" valign="middle" style="text-align: center"><font color="" size="4">您还没有添加订单</font></td>
+                                        </tr>
+                                        #else
+                                            #foreach($obj in $page.getListResult())
+                                            <tr>
+                                                <td>$!{obj.orderCode}</td>
+                                                <td>
+                                                    $!{obj.institutionCode}
+                                                </td>
+                                                <td>
+                                                    $!{obj.skuName}
+                                                </td>
+                                                <td>
+                                                    $!{obj.redeemCodeNum}
+                                                </td>
+                                                <td>
+                                                    $!date.format('yyyy-MM-dd',$!obj.timeBegin) 至 $!date.format('yyyy-MM-dd',$!obj.timeEnd)
+                                                </td>
+                                                <td>
+                                                    $!date.format('yyyy-MM-dd HH:mm:ss',$!obj.createTime)
+                                                </td>
+                                                <td>
+                                                    #if(${obj.status} == 1)
+                                                        待发码
+                                                    #elseif(${obj.status} == 2)
+                                                        等待付款
+                                                    #elseif(${obj.status} == 3)
+                                                        已结款
+                                                    #elseif(${obj.status} == 0)
+                                                        已取消
+                                                    #end
+                                                </td>
+                                                <td>
+                                                    $!{obj.totalAmount}
+                                                </td>
+                                                <td>
+                                                    $!{obj.actualAmount}
+                                                </td>
+                                                <td>
+                                                    $!{obj.batchNumber}
+                                                </td>
+                                                <td>
+                                                    <div class='text-center'>
+                                                        #if($!{obj.status} == 1)
+                                                            <a data-toggle="modal" data-release="true" class="btn btn-success btn-mini" data-content=$!{obj} name="button" type="button" id="grantBtn">
+                                                                <font color="#f0f8ff">发码</font>
+                                                            </a>
+                                                            &nbsp;
+                                                            <a id="objCancel" class='btn btn-danger btn-mini' href="javascript:void(0)" url='${basePath}user/security/institutionOrder/doCancelOrder/$!{obj.uuid}'>
+                                                                <i class='icon-remove'>取消订单</i>
+                                                            </a>
+                                                            #elseif($!{obj.status} == 2)
+                                                                <a data-toggle="modal" data-release="true" class="btn btn-success btn-mini" data-content='$!{obj.uuid}' data-value="$!{obj.totalAmount}" type ="button" id="payBtn">
+                                                                    <font color="#f0f8ff">付款</font>
+                                                                </a>
+                                                                <a data-toggle="modal" data-release="true" class="btn btn-success btn-mini" data-content='$!{obj.id}'  type ="button" id="exportBtn">
+                                                                    <font color="#f0f8ff">导出</font>
+                                                                </a>
+                                                            #elseif($!{obj.status} == 3)
+                                                                <a data-toggle="modal" data-release="true" class="btn btn-success btn-mini" data-content='$!{obj.id}'  type ="button" id="exportBtn">
+                                                                    <font color="#f0f8ff">导出</font>
+                                                                </a>
+                                                        #end
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            #end
+                                        #end
+                                    </tbody>
+                                </table>
+                                <!-- 引入分页 -->
+                                #pageBar("queryForm")
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class='modal hide fade' id='modal_grant' role='dialog' tabindex='-1'>
+        <div class='modal-header'>
+            <button class='close' data-dismiss='modal' type='button'>&times;</button>
+            <h3>兑换码发放</h3>
+        </div>
+        <div class='modal-body'>
+            <h2>确定要发放兑换码吗？</h2>
+            <br>
+
+            <div class='control-group info'>
+                <label class='control-label'>机构号:
+                    <span id="codeNumber"></span>
+                </label>
+            </div>
+
+            <div class='control-group info'>
+                <label class='control-label'>兑换码种类:
+                    <span id="skuName"></span>
+                    <input class="input-mini" type="hidden" id="skuId" disabled="disabled"/>
+                </label>
+            </div>
+
+            <div class='control-group info'>
+                <label class='control-label'>发放数量:
+                    <span id="quantity"></span>
+                </label>
+            </div>
+
+            <div class='control-group info'>
+                <label class='control-label'>有效期:
+                    <span id="beginStr"></span> 至 <span id="endStr"></span>
+                    <input class="input-mini" type="hidden" id="beginDate" disabled="disabled"/>
+                    <input class="input-mini" type="hidden" id="endDate" disabled="disabled"/>
+                </label>
+            </div>
+            <input type="hidden" id="orderId"/>
+        </div>
+        <div class='modal-footer'>
+            <button class='btn' data-dismiss='modal'>取消</button>
+            <button id="submitButton" class='btn btn-primary'>确定</button>
+        </div>
+    </div>
+
+    <div class='modal hide fade' id='modal_amount' role='dialog' tabindex='-1'>
+        <div class='modal-header'>
+            <button class='close' data-dismiss='modal' type='button'>&times;</button>
+            <h3>付款</h3>
+        </div>
+        <div class='modal-body'>
+            <input type="text" id ="actualAmount" name="actualAmount" placeholder='请填写支付金额'/>
+            <input type="hidden" id = "orderUUid">
+            <input type="hidden" id = "orderPrice">
+        </div>
+        <div class='modal-footer'>
+            <button class='btn' data-dismiss='modal'>取消</button>
+            <button id="submitPayButton" class='btn btn-primary'>确定</button>
+        </div>
+    </div>
+
+</div>
+
+</body>
+<script>
+
+    requirejs(['customerrelation/institutionOrder/institutionOrder'],function(institutionOrder){
+        institutionOrder.initList();
+    });
+
+</script>
+</html>

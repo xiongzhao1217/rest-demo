@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>rest</artifactId>
+		<groupId>com.ivydad</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+
+	<artifactId>resteasy-spring-springMVC-mybatis-jetty</artifactId>
+	<packaging>war</packaging>
+	<name>rest(springMVC)</name>
+	<url>http://www.ivydad.com</url>
+
+	<properties>
+		<resteasy.version>3.0.12.Final</resteasy.version>
+		<freemarker.version>2.3.23</freemarker.version>
+	</properties>
+
+	<dependencies>
+
+		<!-- Jetty Webapp -->
+		<dependency>
+			<groupId>org.eclipse.jetty</groupId>
+			<artifactId>jetty-webapp</artifactId>
+			<version>${jetty.version}</version>
+		</dependency>
+		<!--RestEasy jar end -->
+
+		<!-- freemarker jar start -->
+		<dependency>
+			<groupId>org.freemarker</groupId>
+			<artifactId>freemarker</artifactId>
+			<version>${freemarker.version}</version>
+		</dependency>
+		<!-- freemarker jar end -->
+
+		<!-- springMVC jar start -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${spring.version}</version>
+		</dependency>
+		<!-- springMVC jar end -->
+
+	</dependencies>
+
+	<build>
+		<finalName>ivydadRestSpringMVC</finalName>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.4.6.v20170531</version>
+				<!--<configuration>-->
+				<!--&lt;!&ndash;<scanintervalseconds>10</scanintervalseconds>&ndash;&gt;-->
+				<!--<jettyXml>src/main/resources/release/jetty-env.xml</jettyXml>-->
+				<!--</configuration>-->
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<archive>
+						<manifest>
+							<!-- 指定打war包时的mainClass包路径-->
+							<mainClass>JettyServer</mainClass>
+						</manifest>
+					</archive>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-antrun-plugin</artifactId>
+				<version>1.7</version>
+				<executions>
+					<execution>
+						<id>main-class-placement</id>
+						<phase>prepare-package</phase>
+						<configuration>
+							<target>
+								<!-- 将编译后mainClass复制到项目根目录下,这样命令行运行war时就能够定位到主类 -->
+								<move todir="${project.build.directory}/${project.build.finalName}/">
+									<fileset dir="${project.build.directory}/classes/">
+										<include name="JettyServer.class" />
+									</fileset>
+								</move>
+							</target>
+						</configuration>
+						<goals>
+							<goal>run</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-dependency-plugin</artifactId>
+				<version>2.5.1</version>
+				<executions>
+					<execution>
+						<id>jetty-classpath</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>unpack-dependencies</goal>
+						</goals>
+						<configuration>
+							<!-- mainClass中需要用到的jar也需要解压到项目根目录下,这里是jetty和servlet的jar -->
+							<includeGroupIds>org.eclipse.jetty, org.eclipse.jetty.orbit,javax.servlet</includeGroupIds>
+							<!-- runtime范围指只在打war包和运行的时候用到,编译的时候用不到 -->
+							<includeScope>runtime</includeScope>
+							<!-- remove some files in order to decrease size -->
+							<excludes>*, about_files/*, META-INF/*</excludes>
+							<outputDirectory>
+								${project.build.directory}/${project.build.finalName}
+							</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>src/main/java</directory>
+				<includes>
+					<include>**/*.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<includes>
+					<include>**/*</include>
+				</includes>
+			</resource>
+		</resources>
+	</build>
+</project>

@@ -1,0 +1,174 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    #parse("/common/common_head_title.vm")
+    #parse("/common/common_head_meta.vm")
+	#parse("/common/common_head_ref.vm")
+    #leftBarActive("institution")
+    #leftBarActive2("institutionList")
+
+<body class='${themeStyle}'>
+    #parse("/common/common_head.vm")
+
+<div id='wrapper'>
+
+    <div id='main-nav-bg'></div>
+
+    #parse("/common/common_leftbar.vm")
+
+    <section id='content'>
+        <div class='container-fluid'>
+            <div class='row-fluid' id='content-wrapper'>
+                <div class='span12'>
+                    <div class='page-header'>
+                        <h1 class='pull-left'>
+                            <i class='icon-money'></i>
+                            <span>推广机构管理</span>
+                        </h1>
+                        <div class="pull-right">
+                            <ul class="breadcrumb">
+                                <li>
+                                    <i class="icon-signal"></i>
+                                </li>
+                                <li class="separator">
+                                    <i class="icon-angle-right"></i>
+                                </li>
+                                <li>推广机构管理</li>
+                                <li class="separator">
+                                    <i class="icon-angle-right"></i>
+                                </li>
+                                <li class="active">列表</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class='alert alert-info'>
+                        <a class='close' data-dismiss='alert' href='#'>&times;</a>
+                        <strong ></strong>
+                        - 这里显示了推广机构列表信息
+                    </div>
+
+                    <div class='row-fluid'>
+
+                        <div class='span12 box bordered-box green-border' style='margin-bottom:0;'>
+
+                            <form id="queryForm" action="$!{basePath}user/security/institution/institutionList" method="post">
+
+                                <div class="input-prepend">
+                                    <br>
+                                </div>
+
+                                <div class="input-prepend" style="margin-top: 4px;">
+                                    <span class="add-on">机构号码</span>
+                                    <input class="span7" type="text" name="institutionCode" value="$!{institutionQuery.institutionCode}">
+                                </div>
+                                <div class="input-prepend" style="margin-top: 4px;">
+                                    <span class="add-on">机构名称</span>
+                                    <input class="span7" type="text" name="institutionName" value="$!{institutionQuery.institutionName}">
+                                </div>
+                                <div class='span2' style="align-content: center">
+                                <div class="row-fluid " style="margin-top: 4px;">
+                                    <select name = 'cityId' class='select2 input-block-level'>
+                                        <option value="">请选择城市</option>
+                                        #foreach($!region in $!regionList)
+                                            <option value="$!{region.id}"
+                                            #if($!{region.id} == $!{institutionQuery.cityId})
+                                                selected="selected"
+                                            #end
+                                            >$!{region.regionName}</option>
+                                        #end
+                                    </select>
+                                </div>
+                                </div>
+
+                                <div class="pull-right">
+                                    <button class="btn btn-primary" name="button" style="margin-bottom:5px" type="submit">查&nbsp;&nbsp;&nbsp;询</button>
+                                </div>
+
+                                <input type="hidden" name="pageNo" value="$!pageBean.pageNo" id ="pageNo">
+                                <input type="hidden" name="pageSize" value="$!pageBean.pageSize" id ="pageSize">
+                            </form>
+                            <br />
+                            <span class="add-on">机构总数：</span><span>$page.getListResult().size()</span>
+
+                            <div class='box-content box-no-padding'>
+                                <table class='table table-bordered table-hover table-striped' style='margin-bottom:0;'>
+                                    <thead>
+                                    <tr>
+                                        <th>机构号码</th>
+                                        <th>机构名称</th>
+                                        <th>负责人</th>
+                                        <th>手机号</th>
+                                        <th>城市</th>
+                                        <th>佣金系数</th>
+                                        <th>试用兑换码总量</th>
+                                        <th>试用兑换码使用量</th>
+                                        <th>试用兑换码付费转化量</th>
+                                        <th>状态</th>
+                                        <th>操作</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        #if($page.getListResult().size() == 0)
+                                        <tr >
+                                            <td colspan="11" valign="middle" style="text-align: center"><font color="" size="4">您还没有添加机构</font></td>
+                                        </tr>
+                                        #else
+                                            #foreach($obj in $page.getListResult())
+                                            <tr>
+                                                <td><a style="background-color: #00B83F" href="$!{basePath}user/security/institutionRedeemCount/institutionRedeemCountList?institutionUUid=$!{obj.uuid}">$!{obj.institutionCode}</a></td>
+                                                <td>$!{obj.institutionName}</td>
+                                                <td>$!{obj.headName}</td>
+                                                <td>$!{obj.telephone}</td>
+                                                <td>$!{obj.regionName}</td>
+                                                <td>$!{obj.rate}</td>
+                                                <td><a style="background-color: #00a2d4" href="$!{basePath}user/security/institutionRedeem/toInstitutionRedeemCodeList?institutionCode=$!{obj.institutionCode}">$!{obj.allCodeCount}</a></td>
+                                                <td>$!{obj.usedCodeCount}</td>
+                                                <td>$!{obj.vipConversionCount}</td>
+                                                <td>
+                                                    #if(${obj.status} == 0)
+                                                        <span class="label">冻结</span>
+                                                    #else
+                                                        <span class="label label-success">正常</span>
+                                                    #end
+                                                </td>
+                                                <td>
+                                                    <div class='text-center'>
+                                                        <a class='btn btn-primary btn-mini' href='$!{basePath}user/security/institution/institutionEdit?uuid=$!{obj.uuid}'>
+                                                            <i class='icon-edit'>修改信息</i>
+                                                        </a>
+                                                        &nbsp;
+                                                        #if(${obj.status} == 0)
+                                                            <a id="objOpen" class='btn btn-success btn-mini' href="javascript:void(0)" url='${basePath}user/security/institution/status?uuid=$!{obj.uuid}' data-instituton = '$!{obj.institutionName}' objOpne = '1'>
+                                                                <i class='icon-ok-sign'>取消冻结</i>
+                                                            </a>
+                                                        #else
+                                                            <a id="objOpen" class='btn btn-warning btn-mini' href="javascript:void(0)" url='${basePath}user/security/institution/status?uuid=$!{obj.uuid}' data-instituton = '$!{obj.institutionName}' objOpne = '0'>
+                                                                <i class='icon-ban-circle'>冻&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;结</i>
+                                                            </a>
+                                                        #end
+                                                        &nbsp;
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            #end
+                                        #end
+                                    </tbody>
+                                </table>
+                                <!-- 引入分页 -->
+                                #pageBar("queryForm")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+<script>
+    requirejs(['customerrelation/institution/institution'],function(cdmp){
+        cdmp.innit();
+    });
+</script>
+</html>

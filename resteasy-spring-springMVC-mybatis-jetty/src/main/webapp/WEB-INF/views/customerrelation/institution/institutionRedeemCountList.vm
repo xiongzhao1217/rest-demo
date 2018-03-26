@@ -1,0 +1,129 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+    #parse("/common/common_head_title.vm")
+    #parse("/common/common_head_meta.vm")
+	#parse("/common/common_head_ref.vm")
+    #leftBarActive("institution")
+    #leftBarActive2("institutionRedeemCountList")
+
+<body class='${themeStyle}'>
+    #parse("/common/common_head.vm")
+
+<div id='wrapper'>
+
+    <div id='main-nav-bg'></div>
+
+    #parse("/common/common_leftbar.vm")
+
+    <section id='content'>
+        <div class='container-fluid'>
+            <div class='row-fluid' id='content-wrapper'>
+                <div class='span12'>
+                    <div class='page-header'>
+                        <h1 class='pull-left'>
+                            <i class='icon-money'></i>
+                            <span>$!{institutionVO.institutionName}</span>
+                        </h1>
+                        <div class="pull-right">
+                            <ul class="breadcrumb">
+                                <li>
+                                    <i class="icon-signal"></i>
+                                </li>
+                                <li class="separator">
+                                    <i class="icon-angle-right"></i>
+                                </li>
+                                <li>推广机构详情</li>
+                                <li class="separator">
+                                    <i class="icon-angle-right"></i>
+                                </li>
+                                <li class="active">详情</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class='alert alert-info'>
+                        <a class='close' data-dismiss='alert' href='#'>&times;</a>
+                        <strong ></strong>
+                        - 这里显示了推广机构详情信息
+                    </div>
+
+                    <div class='row-fluid'>
+
+                        <div class='span12 box bordered-box green-border' style='margin-bottom:0;'>
+                           <div class="box-content box-no-padding">
+                               <table class='table table-bordered table-hover table-striped' style='margin-bottom:0;'>
+                                   <thead>
+                                   <tr style="background-color: #D3D3D3">
+                                       <td colspan="11" rowspan="10"><font size="4">$!{institutionVO.institutionName}</font>(机构号码：$!{institutionVO.institutionCode})
+                                           <br />
+                                           负责人：$!{institutionVO.headName}&nbsp;&nbsp;&nbsp;&nbsp;城市：$!{institutionVO.regionName}&nbsp;&nbsp;&nbsp;&nbsp;地址：$!{institutionVO.address}
+                                       </td>
+##                                       <td colspan="11" rowspan="2"></td>
+                                   </tr>
+                                   </thead>
+                                   <tbody>
+                                   <tr>
+                                       <td colspan="11" rowspan="10">佣金余额$!{accountVO.withdrawAmount}元
+                                           <br/>
+                                           佣金总收入：$!{accountVO.totalAmount}&nbsp;&nbsp;&nbsp;&nbsp;已提现：$!{accountVO.withdrawCount}&nbsp;&nbsp;&nbsp;&nbsp;待结算：$!{accountVO.freezeAmount}&nbsp;&nbsp;&nbsp;&nbsp;
+                                         <div class="pull-right">
+                                           <a class='btn btn-primary btn-mini' href='$!{basePath}user/security/institutionOrder/toInstitutionOrderList?institutionCode=$!{institutionVO.institutionCode}' style="">
+                                               <i class='icon-table'>订单管理</i>
+                                           </a>
+##                                           &nbsp;&nbsp;&nbsp;&nbsp;
+##                                           <a class='btn btn-primary btn-mini' href='$!{basePath}'>
+##                                               <i class='icon-table'>提现管理</i>
+##                                           </a>
+                                         </div>
+                                       </td>
+##                                       <td colspan="11" rowspan="2"></td>
+                                   </tr>
+                               </tbody>
+                               </table>
+                           </div>
+
+                            <div class='box-content box-no-padding'>
+                                <table class='table table-bordered table-hover table-striped' style='margin-bottom:0;'>
+                                    <thead>
+                                    <tr>
+                                        <th>时间/月</th>
+                                        <th>兑换码使用量</th>
+                                        <th>付费转化量</th>
+                                        <th>转化付费总额</th>
+                                        <th>当月佣金系数</th>
+                                        <th>月佣金</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        #if($page.getListResult().size() == 0)
+                                        <tr >
+                                            <td colspan="6" valign="middle" style="text-align: center"><font color="" size="4">此机构没有兑换码使用信息</font></td>
+                                        </tr>
+                                        #else
+                                            #foreach($obj in $page.getListResult())
+                                            <tr>
+                                                <td>$!date.format('yyyy-MM-dd',$!obj.createTime)</td>
+                                                <td>$!{obj.redeemCodeCount}</td>
+                                                <td>$!{obj.payVipCount}</td>
+                                                <td>$!{obj.totalMoney}</td>
+                                                <td>$!{obj.rate}</td>
+                                                <td>$!{obj.institutionCommission}</td>
+                                            </tr>
+                                            #end
+                                        #end
+                                    </tbody>
+                                </table>
+                                <!-- 引入分页 -->
+                                #pageBar("queryForm")
+                            </div>
+                            <span>试用兑换码总量：$!{institutionVO.allCodeCount}&nbsp;&nbsp;&nbsp;&nbsp;试用兑换码使用量：$!{institutionVO.usedCodeCount}&nbsp;&nbsp;&nbsp;&nbsp;付费转化量：$!{institutionVO.vipConversionCount}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+</body>
+</html>

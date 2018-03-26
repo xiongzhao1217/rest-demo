@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+
+    <!-- 为velocity传递参数 -->
+    #navLevel1Param("member_and_role")
+    #navLevel2Param("member")
+
+    ##set( $memberLeftBarParameter = "active" )
+
+    <!-- meta及资源引用部分 -->
+    #parse("./common/common_head_title.html")
+    #parse("./common/common_head_meta.html")
+    #parse("./common/common_head_ref.html")
+</head>
+<body class='contrast-blue'>
+
+<!-- head部分-->
+#parse("./common/common_head.html")
+
+<div id='wrapper'>
+    <div id='main-nav-bg'></div>
+
+    <!-- 左侧导航栏 -->
+    #parse("/common/common_left.html")
+
+    <section id='content'>
+        <div class='container-fluid'>
+            <div class='row-fluid' id='content-wrapper'>
+                <div class='span12'>
+                    <div class='page-header'>
+                        <h1 class='pull-left'>
+                            <i class='icon-user'></i>
+                            <span>用户管理</span>
+                        </h1>
+
+                    </div>
+
+
+                    <div class='row-fluid'>
+
+
+                        <div class='span12 box bordered-box green-border' style='margin-bottom:0;'>
+
+                            <form id="queryForm" action="${basePath}member/memberList" method="post">
+
+                                <div class="input-prepend" style="margin-top: 4px;">
+                                    <a class="btn btn-success" style="margin-bottom:5px" href="${basePath}member/memberAdd">
+                                        新&nbsp;&nbsp;增
+                                    </a>
+                                </div>
+
+                                <input type="hidden" name="pageNo" value="$!pageBean.pageNo" id ="pageNo">
+                                <input type="hidden" name="pageSize" value="$!pageBean.pageSize" id ="pageSize">
+                                <div class="input-prepend">
+                                    <span class="add-on">用户名</span>
+                                    <input class="span4" type="text" name="username" value="$!{queryParams.username}">
+                                </div>
+                                <div class="input-prepend">
+                                    <span class="add-on">邮箱</span>
+                                    <input class="span7"  type="text" name="email" value="$!{queryParams.email}">
+                                </div>
+                                <div class="pull-right">
+                                    <button class="btn btn-primary" name="button" style="margin-bottom:5px" type="submit">查&nbsp;&nbsp;&nbsp;询</button>
+                                </div>
+                            </form>
+
+                            <div class='box-content box-no-padding'>
+                                        <table class='table table-bordered table-hover table-striped' style='margin-bottom:0;'>
+                                            <thead>
+                                            <tr>
+                                                <th>用户名</th>
+                                                <th>邮箱</th>
+                                                <th>状态</th>
+                                                <th>邮件域名</th>
+                                                <th>操作</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                                #foreach($member in ${page.listResult})
+                                                <tr>
+	                                                <td>$!{member.username}</td>
+	                                                <td>$!{member.email}</td>
+	                                                <td>
+	                                                    <span class='label label-success'>可用</span>
+	                                                </td>
+	                                                <td>
+						                        		#if($!member.email.endsWith('@163.com'))
+						                        			163邮件
+						                        		#elseif($!member.email.endsWith('@315.com.cn'))
+											                 JYD邮件
+											            #else
+											            	其他邮件
+						                        		#end 
+	                                                </td>
+	                                                <td>
+	                                                    <div class='text-right'>
+	                                                        <a class='btn btn-success btn-mini' href='${basePath}member/memberEdit/${member.id}'>
+	                                                            <i class='icon-edit'>编辑</i>
+	                                                        </a>
+	                                                        <a class='btn btn-danger btn-mini' href='${basePath}member/memberDel/${member.id}'>
+	                                                            <i class='icon-remove'>删除</i>
+	                                                        </a>
+	                                                    </div>
+	                                                </td>
+                                                </tr>
+                                                #end
+                                            </tbody>
+                                        </table>
+                                        <!-- 引入分页 -->
+                                        #pageBar("queryForm")
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+<!-- footer部分-->
+#parse("/common/common_footer_ref.html")
+
+
+$!memberService.testVelocity($!{hello})
+
+
+</body>
+</html>

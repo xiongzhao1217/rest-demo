@@ -1,0 +1,19 @@
+/*tips*/
+.tips-pop1{
+    height: 42px;
+    line-height: 42px;
+    background: #db4437;
+    opacity: .8;
+    padding: 0 30px;
+    color: #FFF;
+    display: none;
+}
+.tips-pop2{
+    height: 42px;
+    line-height: 42px;
+    background: #000;
+    opacity: .8;
+    padding: 0 30px;
+    color: #FFF;
+    display: none;
+}
